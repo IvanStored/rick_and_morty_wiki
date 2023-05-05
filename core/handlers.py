@@ -32,7 +32,7 @@ def make_message_text(character_info: dict, marker: str) -> str:
         species = bold("Species: ") + character_info["species"]
         gender = bold("Gender: ") + character_info["gender"]
         origin = bold("Origin: ") + character_info["origin"]["name"]
-        location = bold("Location: ") + character_info["location"]["name"]
+        location = bold("Last known location: ") + character_info["location"]["name"]
         message_text = f"{name}\n{status}\n{species}\n{type_}\n{gender}\n{origin}\n{location}"
     elif marker == "location":
         dimension = bold("Dimension: ") + character_info["dimension"]
