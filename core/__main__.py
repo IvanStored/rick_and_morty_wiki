@@ -15,10 +15,11 @@ async def startup(disp: Dispatcher) -> None:
 async def shutdown(disp: Dispatcher) -> None:
     logger.info("Bot finished")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     executor.start_polling(
         dispatcher=dp,
         skip_updates=True,
         on_startup=startup,
-        on_shutdown=shutdown
+        on_shutdown=shutdown,
     )

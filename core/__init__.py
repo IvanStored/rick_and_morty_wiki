@@ -1,4 +1,3 @@
-from core.handlers import send_welcome, echo
+from core.handlers import send_welcome, all_characters, random_character
 
-__all__ = ["send_welcome", "echo"]
-
+__all__ = ["send_welcome", "all_characters", "random_character"]

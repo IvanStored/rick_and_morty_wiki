@@ -7,7 +7,9 @@ async def set_default_commands(dp: Dispatcher) -> None:
         [
             types.BotCommand("start", "Start bot"),
             types.BotCommand("all_characters", "All characters"),
-            types.BotCommand("all_locations", "All locations"),
-            types.BotCommand("all_episodes", "All episodes")
+            types.BotCommand(
+                "random_character", "Info about random character"
+            ),
+            types.BotCommand("random_location", "Info about random location"),
         ]
     )
