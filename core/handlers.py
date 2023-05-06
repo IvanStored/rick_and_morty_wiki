@@ -9,41 +9,18 @@ from aiogram.types import (
     InlineKeyboardButton,
     CallbackQuery,
 )
-from aiogram.utils.markdown import bold
 from loguru import logger
 from requests.exceptions import MissingSchema
 
 from core.loader import dp, bot, storage, CHARACTER_COUNT, Marker
 from api_requests import gather_data
+from core.utils import make_message_text
 
 
 @dp.message_handler(commands=["start", "help"])
 async def send_welcome(message: Message) -> None:
     # TODO : welcome message
     await gather_data()
-
-
-def make_message_text(character_info: dict, marker: str) -> str:
-    name = bold("Name: ") + character_info["name"]
-    type_ = bold("Type: ") + character_info["type"]
-    message_text = ""
-    if marker == "character":
-        status = bold("Status: ") + character_info["status"]
-        species = bold("Species: ") + character_info["species"]
-        gender = bold("Gender: ") + character_info["gender"]
-        origin = bold("Origin: ") + character_info["origin"]["name"]
-        location = bold("Last known location: ") + character_info["location"]["name"]
-        message_text = f"{name}\n{status}\n{species}\n{type_}\n{gender}\n{origin}\n{location}"
-    elif marker == "location":
-        dimension = bold("Dimension: ") + character_info["dimension"]
-        message_text = f"{name}\n{type_}\n{dimension}"
-
-    return (
-        message_text.replace("(", "\(")
-        .replace(")", "\)")
-        .replace("-", "\-")
-        .replace(".", "\.")
-    )
 
 
 @dp.message_handler(Command("all_characters"))
