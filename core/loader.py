@@ -12,7 +12,7 @@ LOCATION_URL = os.getenv("LOCATION_URL")
 CHARACTER_PAGES_COUNT = requests.get(url=CHARACTER_URL).json()["info"]["pages"]
 CHARACTER_COUNT = requests.get(url=CHARACTER_URL).json()["info"]["count"]
 token = os.getenv("BOT_TOKEN")
-bot = Bot(token=token, parse_mode=types.ParseMode.MARKDOWN_V2)
+bot = Bot(token=token, parse_mode=types.ParseMode.MARKDOWN)
 dp = Dispatcher(bot)
 storage = Redis(
     host=os.getenv("REDIS_HOST"), port=int(os.getenv("REDIS_PORT"))
