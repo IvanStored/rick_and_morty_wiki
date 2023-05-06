@@ -14,7 +14,7 @@ from requests.exceptions import MissingSchema
 
 from core.loader import dp, bot, storage, CHARACTER_COUNT, Marker
 from api_requests import gather_data
-from core.utils import make_message_text
+from core.utils import make_message_text, make_keyboard
 
 
 @dp.message_handler(commands=["start", "help"])
@@ -29,38 +29,15 @@ async def all_characters(
 ) -> None:
     character_info = await storage.get(name=page)
     character_info = json.loads(character_info.decode("utf-8"))
-    buttons = InlineKeyboardMarkup()
-    left = page - 1 if page != 1 else CHARACTER_COUNT
-    right = page + 1 if page != CHARACTER_COUNT else 1
-    left_button = InlineKeyboardButton("←", callback_data=f"to {left}")
-    page_button = InlineKeyboardButton(
-        f"{str(page)}/{str(CHARACTER_COUNT)}", callback_data="_"
-    )
-    right_button = InlineKeyboardButton("→", callback_data=f"to {right}")
-    origin_button = InlineKeyboardButton(
-        "Info about origin",
-        callback_data=character_info["origin"]["url"]
-        if character_info["origin"]["url"]
-        else "unknown",
-    )
-    location_button = InlineKeyboardButton(
-        "Info about location",
-        callback_data=character_info["location"]["url"]
-        if character_info["location"]["url"]
-        else "unknown",
-    )
-    buttons.add(left_button, page_button, right_button)
-    buttons.add(origin_button)
-    buttons.add(location_button)
 
     text_message = make_message_text(
         character_info=character_info, marker=Marker.character
     )
-
+    keyboard = make_keyboard(page=page, character_info=character_info)
     await message.answer_photo(
         photo=character_info["image"],
         caption=text_message,
-        reply_markup=buttons,
+        reply_markup=keyboard,
     )
     logger.info(f"Get info about {character_info['name']}")
     try:
