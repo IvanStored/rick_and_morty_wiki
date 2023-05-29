@@ -4,28 +4,26 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from core.loader import CHARACTER_COUNT
 
 
-def make_message_text(character_info: dict, marker: str) -> str:
-    name = f"*Name:* {character_info['name']}"
-    type_ = f"*Type:* {character_info['type']}"
+def make_message_text(entity_info: dict, marker: str) -> str:
+    name = f"*Name:* {entity_info['name']}"
+    type_ = f"*Type:* {entity_info['type']}"
     message_text = ""
     if marker == "character":
-        status = f"*Status:* {character_info['status']}"
-        species = f"*Species:* {character_info['species']}"
-        gender = f"*Gender:* {character_info['gender']}"
-        origin = f"*Origin:* {character_info['origin']['name']}"
-        location = (
-            f"*Last known location:* {character_info['location']['name']}"
-        )
+        status = f"*Status:* {entity_info['status']}"
+        species = f"*Species:* {entity_info['species']}"
+        gender = f"*Gender:* {entity_info['gender']}"
+        origin = f"*Origin:* {entity_info['origin']['name']}"
+        location = f"*Last known location:* {entity_info['location']['name']}"
         message_text = f"{name}\n{status}\n{species}\n{type_}\n{gender}\n{origin}\n{location}"
     elif marker == "location":
-        dimension = f"*Dimension:* {character_info['dimension']}"
+        dimension = f"*Dimension:* {entity_info['dimension']}"
         message_text = f"{name}\n{type_}\n{dimension}"
 
     return message_text
 
 
 def make_buttons(
-    page: int, left: int, right: int, character_info: dict
+    page: int, left: int, right: int, entity_info: dict
 ) -> tuple[
     InlineKeyboardButton,
     InlineKeyboardButton,
@@ -40,14 +38,14 @@ def make_buttons(
     right_button = InlineKeyboardButton("→", callback_data=f"to {right}")
     origin_button = InlineKeyboardButton(
         "Info about origin",
-        callback_data=character_info["origin"]["url"]
-        if character_info["origin"]["url"]
+        callback_data=entity_info["origin"]["url"]
+        if entity_info["origin"]["url"]
         else "unknown",
     )
     location_button = InlineKeyboardButton(
         "Info about location",
-        callback_data=character_info["location"]["url"]
-        if character_info["location"]["url"]
+        callback_data=entity_info["location"]["url"]
+        if entity_info["location"]["url"]
         else "unknown",
     )
     return (
@@ -59,7 +57,7 @@ def make_buttons(
     )
 
 
-def make_keyboard(page: int, character_info: dict) -> InlineKeyboardMarkup:
+def make_keyboard(page: int, entity_info: dict) -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup()
     left = page - 1 if page != 1 else CHARACTER_COUNT
     right = page + 1 if page != CHARACTER_COUNT else 1
@@ -70,7 +68,7 @@ def make_keyboard(page: int, character_info: dict) -> InlineKeyboardMarkup:
         origin_button,
         location_button,
     ) = make_buttons(
-        page=page, left=left, right=right, character_info=character_info
+        page=page, left=left, right=right, entity_info=entity_info
     )
     keyboard.add(left_button, page_button, right_button)
     keyboard.add(origin_button, location_button)

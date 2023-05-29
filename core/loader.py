@@ -11,6 +11,7 @@ CHARACTER_URL = os.getenv("CHARACTER_URL")
 LOCATION_URL = os.getenv("LOCATION_URL")
 CHARACTER_PAGES_COUNT = requests.get(url=CHARACTER_URL).json()["info"]["pages"]
 CHARACTER_COUNT = requests.get(url=CHARACTER_URL).json()["info"]["count"]
+LOCATION_COUNT = requests.get(url=LOCATION_URL).json()["info"]["count"]
 token = os.getenv("BOT_TOKEN")
 bot = Bot(token=token, parse_mode=types.ParseMode.MARKDOWN)
 dp = Dispatcher(bot)
