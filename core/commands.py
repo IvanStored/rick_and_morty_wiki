@@ -11,5 +11,7 @@ async def set_default_commands(dp: Dispatcher) -> None:
                 "random_character", "Info about random character"
             ),
             types.BotCommand("random_location", "Info about random location"),
+            types.BotCommand("find_location", "Filter locations by name"),
+            types.BotCommand("filter_characters", "Filter characters by name"),
         ]
     )

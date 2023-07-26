@@ -1,10 +1,12 @@
+import os
+
 from aiogram import Dispatcher
 from aiogram.utils import executor
 
 from core.commands import set_default_commands
 from loguru import logger
 
-from core.loader import dp
+from core.loader import dp, all_characters_file, filtered_results_file
 
 
 async def startup(disp: Dispatcher) -> None:
@@ -13,6 +15,11 @@ async def startup(disp: Dispatcher) -> None:
 
 
 async def shutdown(disp: Dispatcher) -> None:
+    try:
+        os.remove(all_characters_file)
+        os.remove(filtered_results_file)
+    except Exception as e:
+        ...
     logger.info("Bot finished")
 
 

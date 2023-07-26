@@ -1,10 +1,16 @@
-from core.loader import storage, CHARACTER_PAGES_COUNT, CHARACTER_URL
+from core.loader import (
+    CHARACTER_PAGES_COUNT,
+    CHARACTER_URL,
+    all_characters_file,
+)
 
 import asyncio
 import json
 
 import aiohttp
 from aiohttp import ClientSession
+
+DATA_TO_WRITE = []
 
 
 def without_specified_keys(character_info: dict) -> dict:
@@ -26,10 +32,7 @@ async def get_character_data(session: ClientSession, page: int) -> None:
 
         for character in characters:
             character_info = without_specified_keys(character_info=character)
-            await storage.set(
-                name=character["id"],
-                value=json.dumps(character_info).encode("utf-8"),
-            )
+            DATA_TO_WRITE.append(character_info)
 
 
 async def gather_data() -> None:
@@ -41,3 +44,6 @@ async def gather_data() -> None:
             tasks.append(task)
 
         await asyncio.gather(*tasks)
+
+    with open(all_characters_file, "w") as file:
+        json.dump(DATA_TO_WRITE, file, indent=4)
